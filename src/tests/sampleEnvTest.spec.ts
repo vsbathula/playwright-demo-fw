@@ -1,7 +1,20 @@
-import { test } from "@playwright/test";
-import LoginPage from "../pages/LoginPage";
+import { test } from "../fixtures/base_fixture";
 
-test("test login", async({ page }) => {
-    const loginPage = new LoginPage(page);
+// test.describe.configure({
+//     mode: "parallel"
+// });
+
+test("login test", async({ logger, loginPage, homePage }, testInfo) => {
     await loginPage.userLogin(process.env.username!, process.env.password!);
+    await homePage.validateHomePageTitle();
+});
+
+test("login test1", async({ logger, loginPage, homePage }, testInfo) => {
+    await loginPage.userLogin(process.env.username!, process.env.password!);
+    await homePage.validateHomePageTitle();
+});
+
+test("login test2", async({ logger, loginPage, homePage }, testInfo) => {
+    await loginPage.userLogin(process.env.username!, process.env.password!);
+    await homePage.validateHomePageTitle();
 });

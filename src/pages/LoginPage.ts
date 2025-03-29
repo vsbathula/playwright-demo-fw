@@ -1,17 +1,21 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 import Logger from "../utils/LoggerUtil";
 
 export default class LoginPage {
   private readonly usernameInput = "#username";
   private readonly passwordInput = "#password";
   private readonly loginButton = "#Login";
+  private readonly loginPageTitle = "Login | Salesforce";
   private logger = new Logger();
 
-  constructor(private page: Page) {}
+  constructor(private page: Page) {
+  }
 
   async navigateToLoginPage() {
     await this.page.goto("/");
     this.logger.info(`Navigated to url: ${process.env.baseurl}`);
+    await expect(this.page).toHaveTitle(this.loginPageTitle);
+    this.logger.info(`Login page title: ${this.loginPageTitle}`);
   }
 
   async fillUsername(username: string) {
@@ -41,5 +45,6 @@ export default class LoginPage {
     await this.navigateToLoginPage();
     await this.fillUsername(username);
     await this.fillPassword(password);
+    await this.clickLoginButton();
   }
 }

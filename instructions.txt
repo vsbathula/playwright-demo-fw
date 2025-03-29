@@ -50,7 +50,7 @@ sinppets: configure snippets
 			"",
 			"export default class ${1:ClassName} {",
 			"\tprivate readonly $3 = \"\";",
-			"private logger = new Logger();",
+			"\tprivate logger = new Logger();",
 			"",
 			"\tconstructor(private page: Page) {",
 			"\t\t$2",
