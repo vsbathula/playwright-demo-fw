@@ -29,3 +29,5 @@ export const test = base.extend<PageInit>({
         await use(new HomePage(page));
     }
 });
+
+export { expect } from "@playwright/test"

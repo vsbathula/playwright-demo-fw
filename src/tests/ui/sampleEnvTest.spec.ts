@@ -1,4 +1,4 @@
-import { test } from "../fixtures/base_fixture";
+import { test } from "../../fixtures/base_fixture";
 
 // test.describe.configure({
 //     mode: "parallel"
