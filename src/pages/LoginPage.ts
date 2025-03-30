@@ -1,37 +1,30 @@
 import { Page, expect } from "@playwright/test";
-import Logger from "../utils/LoggerUtil";
+import { BasePage } from "./BasePage";
 
-export default class LoginPage {
+export default class LoginPage extends BasePage {
   private readonly usernameInput = "#username";
   private readonly passwordInput = "#password";
   private readonly loginButton = "#Login";
   private readonly loginPageTitle = "Login | Salesforce";
-  private logger = new Logger();
 
-  constructor(private page: Page) {
-  }
-
-  async navigateToLoginPage() {
-    await this.page.goto("/");
-    this.logger.info(`Navigated to url: ${process.env.baseurl}`);
-    await expect(this.page).toHaveTitle(this.loginPageTitle);
-    this.logger.info(`Login page title: ${this.loginPageTitle}`);
+  constructor(page: Page) {
+    super(page);
+    this.navigateToPage("/");
   }
 
   async fillUsername(username: string) {
-    await this.page.locator(this.usernameInput).fill(username);
+    await this.page.fill(this.usernameInput, username);
     this.logger.info(`Entered username: ${username}`)
   }
 
   async fillPassword(password: string) {
-    await this.page.locator(this.passwordInput).fill(password);
+    await this.page.fill(this.passwordInput, password);
     this.logger.info(`Entered username: ${password}`)
   }
 
   async clickLoginButton() {
     await this.page
-      .locator(this.loginButton)
-      .click()
+      .click(this.loginButton)
       .catch((error) => {
         this.logger.error(`Error clicking login button: ${error}`);
         throw error;
@@ -42,7 +35,6 @@ export default class LoginPage {
   }
 
   async userLogin(username: string, password: string) {
-    await this.navigateToLoginPage();
     await this.fillUsername(username);
     await this.fillPassword(password);
     await this.clickLoginButton();

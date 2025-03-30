@@ -1,3 +1,4 @@
+import { HOME_PAGE_TITLE, LOGIN_PAGE_TITLE } from "../../data/constants";
 import { test } from "../../fixtures/base_fixture";
 
 // test.describe.configure({
@@ -5,16 +6,7 @@ import { test } from "../../fixtures/base_fixture";
 // });
 
 test("login test", async({ logger, loginPage, homePage }, testInfo) => {
+    await loginPage.validatePageTitle(LOGIN_PAGE_TITLE);
     await loginPage.userLogin(process.env.username!, process.env.password!);
-    await homePage.validateHomePageTitle();
-});
-
-test("login test1", async({ logger, loginPage, homePage }, testInfo) => {
-    await loginPage.userLogin(process.env.username!, process.env.password!);
-    await homePage.validateHomePageTitle();
-});
-
-test("login test2", async({ logger, loginPage, homePage }, testInfo) => {
-    await loginPage.userLogin(process.env.username!, process.env.password!);
-    await homePage.validateHomePageTitle();
+    await homePage.validatePageTitle((HOME_PAGE_TITLE), 10000);
 });

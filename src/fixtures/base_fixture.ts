@@ -6,10 +6,18 @@ import Logger from "../utils/LoggerUtil";
 const loggerObject = new Logger();
 
 base.beforeEach(async ({}, testInfo) => {
+    test.info().annotations.push({
+        type: "Start time",
+        description: new Date().toISOString()
+    });
     loggerObject.info(`Started exceution of: ${testInfo.title}`);
 });
 
 base.afterEach(async ({}, testInfo) => {
+    test.info().annotations.push({
+        type: "End time",
+        description: new Date().toISOString()
+    });
     loggerObject.info(`Ending exceution of: ${testInfo.title}`);
     loggerObject.info(`${testInfo.title} status: ${testInfo.status}`);
 });

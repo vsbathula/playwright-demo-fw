@@ -46,14 +46,12 @@ sinppets: configure snippets
 		"prefix": "tspc",
 		"body": [
 			"import { Page, expect } from \"@playwright/test\";",
-			"import Logger from \"../utils/LoggerUtil\";",
 			"",
 			"export default class ${1:ClassName} {",
 			"\tprivate readonly $3 = \"\";",
-			"\tprivate logger = new Logger();",
 			"",
-			"\tconstructor(private page: Page) {",
-			"\t\t$2",
+			"\tconstructor(page: Page) {",
+			"\tsuper(page);",
 			"\t}",
 			"}"
 		],
