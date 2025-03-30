@@ -79,19 +79,16 @@ export default defineConfig({
       testDir: './src/tests/api',
       use: { 
         baseURL: process.env.apiurl,
-        headless: true
+        headless: true,
+        extraHTTPHeaders: {
+          'Accept': 'application/json',
+          'Authorization': `token ${process.env.API_TOKEN}`,
+        },
+        proxy: {
+          server: 'http://my-proxy:8080'
+        }
       },
     }
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
 
     /* Test against mobile viewports. */
     // {
@@ -101,16 +98,6 @@ export default defineConfig({
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
