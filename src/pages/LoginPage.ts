@@ -5,11 +5,9 @@ export default class LoginPage extends BasePage {
   private readonly usernameInput = "#username";
   private readonly passwordInput = "#password";
   private readonly loginButton = "#Login";
-  private readonly loginPageTitle = "Login | Salesforce";
 
   constructor(page: Page) {
     super(page);
-    this.navigateToPage("/");
   }
 
   async fillUsername(username: string) {

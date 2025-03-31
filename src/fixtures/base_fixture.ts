@@ -5,12 +5,13 @@ import Logger from "../utils/LoggerUtil";
 
 const loggerObject = new Logger();
 
-base.beforeEach(async ({}, testInfo) => {
+base.beforeEach(async ({ page }, testInfo) => {
     test.info().annotations.push({
         type: "Start time",
         description: new Date().toISOString()
     });
     loggerObject.info(`Started exceution of: ${testInfo.title}`);
+    await page.goto("/");
 });
 
 base.afterEach(async ({}, testInfo) => {

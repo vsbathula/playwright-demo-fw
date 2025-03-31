@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import Logger from "../utils/LoggerUtil";
 import { DEFAULT_TIMEOUT } from '../data/constants';
 
@@ -15,8 +15,16 @@ export class BasePage {
     this.logger.info(`Navigated to url: ${process.env.baseurl}${url}`);
   }
 
-  async validatePageTitle(expectedTitle: string, timeoutInMilliSec: number = DEFAULT_TIMEOUT): Promise<void> {
-    await expect(this.page).toHaveTitle(expectedTitle, { timeout: timeoutInMilliSec});
-    this.logger.info(`Page title: ${expectedTitle}`);
+  async validatePageTitle(): Promise<String> {
+    try {
+      await this.page.waitForLoadState();
+
+      const pageTitle = await this.page.title();
+      this.logger.info(`Page title: ${pageTitle}`);
+      return pageTitle;
+    } catch (error) {
+      this.logger.error(`Failed to retrieve page title: ${error}`);
+      throw new Error('Failed to retrieve page title');
+    }
   }
 }
