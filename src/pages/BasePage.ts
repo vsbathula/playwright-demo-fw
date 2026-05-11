@@ -1,18 +1,30 @@
-import { Page } from '@playwright/test';
+import { Page } from "@playwright/test";
 import Logger from "../utils/LoggerUtil";
-import { DEFAULT_TIMEOUT } from '../data/constants';
+import PageUtil from "../utils/PageUtil";
+import ElementActionsUtil from "../utils/ElementActionUtil";
+import { DEFAULT_TIMEOUT } from "../data/constants";
 
 export class BasePage {
   page: Page;
-  logger = new Logger();
+  logger: Logger;
+  pageUtil: PageUtil;
+  elementActions: ElementActionsUtil;
 
-  constructor(page: Page) {
+  constructor(
+    page: Page,
+    logger: Logger,
+    pageUtil: PageUtil,
+    elementActions: ElementActionsUtil,
+  ) {
     this.page = page;
+    this.logger = logger;
+    this.pageUtil = pageUtil;
+    this.elementActions = elementActions;
   }
 
   async navigateToPage(url: string) {
     await this.page.goto(url);
-    this.logger.info(`Navigated to url: ${process.env.baseurl}${url}`);
+    this.logger.info(`Navigated to url: ${process.env.BASE_URL}${url}`);
   }
 
   async validatePageTitle(): Promise<String> {
@@ -24,7 +36,7 @@ export class BasePage {
       return pageTitle;
     } catch (error) {
       this.logger.error(`Failed to retrieve page title: ${error}`);
-      throw new Error('Failed to retrieve page title');
+      throw new Error("Failed to retrieve page title");
     }
   }
 }

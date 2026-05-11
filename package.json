@@ -2,7 +2,17 @@
   "name": "playwright-demo-fw",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --project=ui",
+    "test:api": "playwright test --project=api",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report:html": "playwright show-report",
+    "report:allure": "allure generate allure-results --clean && allure open",
+    "report:allure:generate": "allure generate allure-results --clean",
+    "report:allure:open": "allure open"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,7 +20,9 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.6.2",
+    "allure-commandline": "^2.40.0",
+    "allure-playwright": "^3.8.0",
     "ts-node": "^10.9.2"
   },
   "dependencies": {

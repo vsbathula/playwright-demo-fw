@@ -1,23 +1,31 @@
 import { Page, expect } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import Logger from "../utils/LoggerUtil";
+import PageUtil from "../utils/PageUtil";
+import ElementActionsUtil from "../utils/ElementActionUtil";
 
 export default class LoginPage extends BasePage {
   private readonly usernameInput = "#username";
   private readonly passwordInput = "#password";
   private readonly loginButton = "#Login";
 
-  constructor(page: Page) {
-    super(page);
+  constructor(
+    page: Page,
+    logger: Logger,
+    pageUtil: PageUtil,
+    elementActions: ElementActionsUtil,
+  ) {
+    super(page, logger, pageUtil, elementActions);
   }
 
   async fillUsername(username: string) {
     await this.page.fill(this.usernameInput, username);
-    this.logger.info(`Entered username: ${username}`)
+    this.logger.info(`Entered username: ${username}`);
   }
 
   async fillPassword(password: string) {
     await this.page.fill(this.passwordInput, password);
-    this.logger.info(`Entered username: ${password}`)
+    this.logger.info(`Entered username: ${password}`);
   }
 
   async clickLoginButton() {
@@ -29,7 +37,7 @@ export default class LoginPage extends BasePage {
       })
       .then(() => {
         this.logger.info(`Login button clicked.`);
-    });
+      });
   }
 
   async userLogin(username: string, password: string) {
