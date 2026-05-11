@@ -1,0 +1,84 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run smoke tests daily at 8 AM UTC
+    - cron: "0 8 * * *"
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
+        browser: [chromium, firefox]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run UI tests (${{ matrix.browser }})
+        run: npm run test:ui
+        env:
+          NODE_ENV: qa
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - name: Run API tests
+        run: npm run test:api
+        env:
+          NODE_ENV: qa
+
+      - name: Generate Allure Report
+        if: always()
+        run: npm run report:allure:generate
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.node-version }}-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.node-version }}-${{ matrix.browser }}
+          path: allure-report/
+          retention-days: 30
+
+      - name: Upload test videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-videos-${{ matrix.node-version }}-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 7
+
+      - name: Publish Test Report
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Playwright Results (${{ matrix.node-version }}-${{ matrix.browser }})
+          path: "test-results/results.xml"
+          reporter: "java-junit"
+          fail-on-error: true
